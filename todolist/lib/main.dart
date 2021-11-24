@@ -98,13 +98,17 @@ class _MyHomePageState extends State<MyHomePage> {
             const Text(
               'Please input what to do.',
             ),
-            TextField(
-              decoration: InputDecoration(
-                labelText: 'To do',
+            SizedBox(
+              width: 200,
+              child: TextField(
+                decoration: InputDecoration(
+                  labelText: 'To do',
+                ),
               ),
-            ),
+            )
           ],
         ),
+        
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: _incrementCounter,
