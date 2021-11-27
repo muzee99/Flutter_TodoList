@@ -28,70 +28,117 @@ class MyHomePage extends StatefulWidget {
   State<MyHomePage> createState() => _MyHomePageState();
 }
 
-// class TodoItem {
-//   const TodoItem({required this.content});
-//   final String content;
-// }
+class TodoItem {
+  const TodoItem({required this.content});
+  final String content;
+}
 
-// typedef ListChangeCallback = Function(TodoItem item, bool isDone);
+typedef ListChangeCallback = Function(TodoItem item, bool isDone);
 
-// class TodoListItem extends StatelessWidget{
+class TodoListItem extends StatelessWidget{
 
-//   TodoListItem({
-//     required this.item,
-//     required this.isDone,
-//     required this.onListChanged,
-//   }) : super(key: ObjectKey(item));
+  TodoListItem({
+    required this.item,
+    required this.isDone,
+    required this.onListChanged,
+  }) : super(key: ObjectKey(item));
 
-//   final TodoItem item;
-//   final bool isDone;
-//   final ListChangeCallback onListChanged;
+  final TodoItem item;
+  final bool isDone;
+  final ListChangeCallback onListChanged;
 
-//   Color getColor(BuildContext context) {
-//     return isDone ? Colors.black54 : Theme.of(context).primaryColor;
-//   }
+  Color getColor(BuildContext context) {
+    return isDone ? Colors.black54 : Theme.of(context).primaryColor;
+  }
 
-//   TextStyle? getTextStyle(BuildContext context) {
-//     if(!isDone) return null;
-//     return const TextStyle(color: Colors.black54, decoration: TextDecoration.lineThrough);
-//   }
+  TextStyle? getTextStyle(BuildContext context) {
+    if(!isDone) return null;
+    return const TextStyle(color: Colors.black54, decoration: TextDecoration.lineThrough);
+  }
   
-//   @override
-//   Widget build(BuildContext context) {
-//     return ListTile(
-//       onTap: () {
-//         onListChanged(item, isDone);
-//       },
-//       leading: CircleAvatar(
-//         backgroundColor: getColor(context),
-//       ),
-//       title: Text(
-//         item.content, 
-//         style: getTextStyle(context),
-//       ),
-//     );
-//   }
-// }
+  @override
+  Widget build(BuildContext context) {
+    return ListTile(
+      onTap: () {
+        onListChanged(item, isDone);
+      },
+      leading: CircleAvatar(
+        backgroundColor: getColor(context),
+      ),
+      title: Text(
+        item.content, 
+        style: getTextStyle(context),
+      ),
+    );
+  }
+}
 
-// class TodoList extends StatefulWidget {
-//   const TodoList({required this.items, Key?key}) : super(key:key);
+class TodoList extends StatefulWidget {
+  const TodoList({required this.items, Key?key}) : super(key:key);
 
-//   final List<TodoItem> items;
+  final List<TodoItem> items;
 
-//   @override
-//   _TodoListState createState() => _TodoListState();
-// }
+  @override
+  _TodoListState createState() => _TodoListState();
+}
 
-// class _TodoListState extends State<TodoList> {
-//   final _todoList = <TodoItem>{};
+class _TodoListState extends State<TodoList> {
+  final _todoList = <TodoItem>{};
 
-//   void handleListChanged(TodoItem item, bool isDone) {
-//     setState(() {
-//       if(!isDone) _todoList.add(item);
-//       else _todoList.remove(item);
-//     });
-//   }
-// }
+  void handleListChanged(TodoItem item, bool isDone) {
+    setState(() {
+      if(!isDone) _todoList.add(item);
+      else _todoList.remove(item);
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return ListView(
+      padding: const EdgeInsets.symmetric(vertical: 8.0),
+      children: widget.items.map((TodoItem item) {
+        return TodoListItem(
+          item: item,
+          isDone: _todoList.contains(item),
+          onListChanged: handleListChanged,
+        );
+      }).toList(),
+    );
+  }
+}
+
+class MyList extends StatelessWidget {
+
+  MyList({
+    required this.item,
+    required this.isDone,
+  }) : super(key: ObjectKey(item));
+
+  final String item;
+  final bool isDone;
+
+  Color getColor(BuildContext context) {
+    return isDone ? Colors.black54 : Theme.of(context).primaryColor;
+  }
+
+  TextStyle? getTextStyle(BuildContext context) {
+    if(!isDone) return null;
+    return const TextStyle(color: Colors.black54, decoration: TextDecoration.lineThrough);
+  }
+  
+  @override
+  Widget build(BuildContext context) {
+    return ListTile(
+      leading: CircleAvatar(
+        backgroundColor: getColor(context),
+      ),
+      title: Text(
+        item, 
+        style: getTextStyle(context),
+      ),
+    );
+  }
+}
 
 
 class _MyHomePageState extends State<MyHomePage> {
@@ -110,20 +157,37 @@ class _MyHomePageState extends State<MyHomePage> {
             const Text(
               'Please input what to do.',
             ),
-            SizedBox(
-              width: 200,
-              child: TextField(
-                decoration: InputDecoration(
-                  labelText: 'To do',
-                ),
-                onSubmitted: (String str) {
-                  setState(() {
-                    data = str;
-                  });
-                },
-              ),
-            ),
-            Text(data),
+            // SizedBox(
+            //   width: 200,
+            //   child: TextField(
+            //     decoration: InputDecoration(
+            //       labelText: 'To do',
+            //     ),
+            //     onSubmitted: (String str) {
+            //       setState(() {
+            //         data = str;
+            //       });
+            //     },
+            //   ),
+            // ),
+            ListView(
+              padding: const EdgeInsets.symmetric(vertical: 8.0),
+              children: <Widget>[
+                ListTile(title: Text("list1",),),
+                ListTile(title: Text("list2",),),
+                ListTile(title: Text("list3",),),
+                // MyList(item: "list1", isDone: true),
+                // MyList(item: "list2", isDone: true),
+                // MyList(item: "list3", isDone: true),
+              ],
+            )
+            // TodoList(
+            //   items: [
+            //     TodoItem(content: "todoList item1"), 
+            //     TodoItem(content: "todoList item2"), 
+            //     TodoItem(content: "todoList item3")
+            //   ],
+            // ),
           ],
         ),
       ),
