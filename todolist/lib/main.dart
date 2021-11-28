@@ -151,45 +151,63 @@ class _MyHomePageState extends State<MyHomePage> {
         title: Text(widget.title),
       ),
       body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            const Text(
-              'Please input what to do.',
-            ),
-            // SizedBox(
-            //   width: 200,
-            //   child: TextField(
-            //     decoration: InputDecoration(
-            //       labelText: 'To do',
-            //     ),
-            //     onSubmitted: (String str) {
-            //       setState(() {
-            //         data = str;
-            //       });
-            //     },
-            //   ),
-            // ),
-            ListView(
-              padding: const EdgeInsets.symmetric(vertical: 8.0),
-              children: <Widget>[
-                ListTile(title: Text("list1",),),
-                ListTile(title: Text("list2",),),
-                ListTile(title: Text("list3",),),
-                // MyList(item: "list1", isDone: true),
-                // MyList(item: "list2", isDone: true),
-                // MyList(item: "list3", isDone: true),
+        // child: ListView(
+        //       padding: const EdgeInsets.symmetric(vertical: 8.0),
+        //       children: <Widget>[
+        //         // ListTile(title: Text("list1",),),
+        //         // ListTile(title: Text("list2",),),
+        //         // ListTile(title: Text("list3",),),
+        //         MyList(item: "list1", isDone: false),
+        //         MyList(item: "list2", isDone: true),
+        //         MyList(item: "list3", isDone: true),
+        //       ],
+        //     )
+            child: TodoList(
+              items: [
+                TodoItem(content: "todoList item1"), 
+                TodoItem(content: "todoList item2"), 
+                TodoItem(content: "todoList item3")
               ],
-            )
-            // TodoList(
-            //   items: [
-            //     TodoItem(content: "todoList item1"), 
-            //     TodoItem(content: "todoList item2"), 
-            //     TodoItem(content: "todoList item3")
-            //   ],
-            // ),
-          ],
-        ),
+            ),
+        // child: Column(
+        //   mainAxisAlignment: MainAxisAlignment.center,
+        //   children: <Widget>[
+        //     const Text(
+        //       'Please input what to do.',
+        //     ),
+        //     SizedBox(
+        //       width: 200,
+        //       child: TextField(
+        //         decoration: InputDecoration(
+        //           labelText: 'To do',
+        //         ),
+        //         onSubmitted: (String str) {
+        //           setState(() {
+        //             data = str;
+        //           });
+        //         },
+        //       ),
+        //     ),
+        //     ListView(
+        //       // padding: const EdgeInsets.symmetric(vertical: 8.0),
+        //       children: <Widget>[
+        //         ListTile(title: Text("list1",),),
+        //         ListTile(title: Text("list2",),),
+        //         ListTile(title: Text("list3",),),
+        //     //     // MyList(item: "list1", isDone: true),
+        //     //     // MyList(item: "list2", isDone: true),
+        //     //     // MyList(item: "list3", isDone: true),
+        //       ],
+        //     )
+        //     // TodoList(
+        //     //   items: [
+        //     //     TodoItem(content: "todoList item1"), 
+        //     //     TodoItem(content: "todoList item2"), 
+        //     //     TodoItem(content: "todoList item3")
+        //     //   ],
+        //     // ),
+        //   ],
+        // ),
       ),
     );
   }
