@@ -87,8 +87,8 @@ class _TodoListState extends State<TodoList> {
 
   void handleListChanged(TodoItem item, bool isDone) {
     setState(() {
-      if(!isDone) _todoList.add(item);
-      else _todoList.remove(item);
+      if(!isDone) {_todoList.add(item);}
+      else {_todoList.remove(item);}
     });
   }
 
@@ -107,108 +107,50 @@ class _TodoListState extends State<TodoList> {
   }
 }
 
-class MyList extends StatelessWidget {
-
-  MyList({
-    required this.item,
-    required this.isDone,
-  }) : super(key: ObjectKey(item));
-
-  final String item;
-  final bool isDone;
-
-  Color getColor(BuildContext context) {
-    return isDone ? Colors.black54 : Theme.of(context).primaryColor;
-  }
-
-  TextStyle? getTextStyle(BuildContext context) {
-    if(!isDone) return null;
-    return const TextStyle(color: Colors.black54, decoration: TextDecoration.lineThrough);
-  }
-  
-  @override
-  Widget build(BuildContext context) {
-    return ListTile(
-      leading: CircleAvatar(
-        backgroundColor: getColor(context),
-      ),
-      title: Text(
-        item, 
-        style: getTextStyle(context),
-      ),
-    );
-  }
-}
-
 
 class _MyHomePageState extends State<MyHomePage> {
   String data = "";
+  List<TodoItem> items = [];
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
+      appBar: AppBar( 
         title: Text(widget.title),
       ),
       body: Center(
-        // child: ListView(
-        //       padding: const EdgeInsets.symmetric(vertical: 8.0),
-        //       children: <Widget>[
-        //         // ListTile(title: Text("list1",),),
-        //         // ListTile(title: Text("list2",),),
-        //         // ListTile(title: Text("list3",),),
-        //         MyList(item: "list1", isDone: false),
-        //         MyList(item: "list2", isDone: true),
-        //         MyList(item: "list3", isDone: true),
-        //       ],
-        //     )
-            child: TodoList(
-              items: [
-                TodoItem(content: "todoList item1"), 
-                TodoItem(content: "todoList item2"), 
-                TodoItem(content: "todoList item3")
-              ],
-            ),
-        // child: Column(
-        //   mainAxisAlignment: MainAxisAlignment.center,
-        //   children: <Widget>[
-        //     const Text(
-        //       'Please input what to do.',
-        //     ),
-        //     SizedBox(
-        //       width: 200,
-        //       child: TextField(
-        //         decoration: InputDecoration(
-        //           labelText: 'To do',
-        //         ),
-        //         onSubmitted: (String str) {
-        //           setState(() {
-        //             data = str;
-        //           });
-        //         },
-        //       ),
-        //     ),
-        //     ListView(
-        //       // padding: const EdgeInsets.symmetric(vertical: 8.0),
-        //       children: <Widget>[
-        //         ListTile(title: Text("list1",),),
-        //         ListTile(title: Text("list2",),),
-        //         ListTile(title: Text("list3",),),
-        //     //     // MyList(item: "list1", isDone: true),
-        //     //     // MyList(item: "list2", isDone: true),
-        //     //     // MyList(item: "list3", isDone: true),
-        //       ],
-        //     )
-        //     // TodoList(
-        //     //   items: [
-        //     //     TodoItem(content: "todoList item1"), 
-        //     //     TodoItem(content: "todoList item2"), 
-        //     //     TodoItem(content: "todoList item3")
-        //     //   ],
-        //     // ),
-        //   ],
-        // ),
-      ),
+        child: Container(
+          color: Colors.blue,
+          margin: const EdgeInsets.all(8.0),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              const Text('Please input what to do.'),
+              SizedBox(
+                child: TextField(
+                  decoration: const InputDecoration(
+                    labelText: 'To do',
+                  ),
+                  onSubmitted: (String str) {
+                    setState(() {
+                      data = str;
+                    });
+                  },
+                ),
+              ),
+              const Expanded(
+                child: TodoList(
+                  items: [
+                    TodoItem(content: "todoList item1"), 
+                    TodoItem(content: "todoList item2"), 
+                    TodoItem(content: "todoList item3"),
+                  ],
+                ),
+              ),
+            ],
+          ),
+        )
+      )
     );
   }
 }
