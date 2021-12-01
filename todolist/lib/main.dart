@@ -12,6 +12,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Flutter Todo List',
       theme: ThemeData(
+        fontFamily: 'SooMyeongjo',
         primarySwatch: Colors.yellow,
       ),
       home: const MyHomePage(title: 'Todo List'),
@@ -74,9 +75,9 @@ class TodoListItem extends StatelessWidget{
 }
 
 class TodoList extends StatefulWidget {
-  const TodoList({required this.items, Key?key}) : super(key:key);
+  TodoList({required this.items, Key?key}) : super(key:key);
 
-  final List<TodoItem> items;
+  List<TodoItem> items;
 
   @override
   _TodoListState createState() => _TodoListState();
@@ -108,8 +109,8 @@ class _TodoListState extends State<TodoList> {
 }
 // street dance girls fighter..
 class _MyHomePageState extends State<MyHomePage> {
-  String data = "";
   List<TodoItem> items = [];
+  final _controller = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -119,31 +120,36 @@ class _MyHomePageState extends State<MyHomePage> {
       ),
       body: Center(
         child: Container(
-          color: Colors.blue,
+          // color: Colors.blue,
           margin: const EdgeInsets.all(8.0),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
-              const Text('Please input what to do.'),
+              const Text(
+                'Please input what to do.',
+                style: TextStyle(fontFamily: "SooMyeongjo", fontSize: 20),
+              ),
               SizedBox(
                 child: TextField(
-                  decoration: const InputDecoration(
+                  controller: _controller,
+                  decoration: InputDecoration(
                     labelText: 'To do',
+                    suffixIcon: IconButton(
+                      onPressed: _controller.clear, 
+                      icon: const Icon(Icons.clear),
+                    ),
                   ),
                   onSubmitted: (String str) {
                     setState(() {
-                      data = str;
+                      items.add(TodoItem(content: str));
+                      _controller.clear();
                     });
                   },
                 ),
               ),
-              const Expanded(
+              Expanded(
                 child: TodoList(
-                  items: [
-                    TodoItem(content: "todoList item1"), 
-                    TodoItem(content: "todoList item2"), 
-                    TodoItem(content: "todoList item3"),
-                  ],
+                  items: items,
                 ),
               ),
             ],
