@@ -49,7 +49,7 @@ class _MyHomePageState extends State<MyHomePage> {
             children: <Widget>[
               const Text(
                 'Please input what to do.',
-                style: TextStyle(fontFamily: "SooMyeongjo", fontSize: 20),
+                // style: TextStyle(fontFamily: "SooMyeongjo", fontSize: 20),
               ),
               SizedBox(
                 child: TextField(
@@ -79,5 +79,25 @@ class _MyHomePageState extends State<MyHomePage> {
         )
       )
     );
+  }
+}
+
+class WhatTodo {
+  final int id;
+  final String content;
+  final bool isDone;
+
+  const WhatTodo({required this.id, required this.content, required this.isDone});
+
+  Map<String, dynamic> toMap() {
+    return {
+      'id': id,
+      'content': content,
+      'isDone': isDone,
+    };
+  }
+  @override
+  String toString() {
+    return "WhatTodo{id: $id, content: $content, isDone: $isDone}";
   }
 }
