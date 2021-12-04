@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'sql_helper.dart';
 import 'todo_list.dart';
 
 void main() {
@@ -34,6 +35,11 @@ class _MyHomePageState extends State<MyHomePage> {
   List<TodoItem> items = [];
   final _controller = TextEditingController();
 
+  Future<void> _insertDB() async {
+    var provider = TodoProvider();
+    var todo = Todo(content: _controller.text);
+    provider.insert(todo);
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -64,6 +70,8 @@ class _MyHomePageState extends State<MyHomePage> {
                   onSubmitted: (String str) {
                     setState(() {
                       items.add(TodoItem(content: str));
+                      debugPrint(str);
+                      _insertDB();
                       _controller.clear();
                     });
                   },
@@ -79,25 +87,5 @@ class _MyHomePageState extends State<MyHomePage> {
         )
       )
     );
-  }
-}
-
-class WhatTodo {
-  final int id;
-  final String content;
-  final bool isDone;
-
-  const WhatTodo({required this.id, required this.content, required this.isDone});
-
-  Map<String, dynamic> toMap() {
-    return {
-      'id': id,
-      'content': content,
-      'isDone': isDone,
-    };
-  }
-  @override
-  String toString() {
-    return "WhatTodo{id: $id, content: $content, isDone: $isDone}";
   }
 }
