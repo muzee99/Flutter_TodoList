@@ -45,7 +45,7 @@ class TodoProvider {
   }
 
   initDB() async {
-    String path = join(await getDatabasesPath(), 'todo.db');
+    String path = join(await getDatabasesPath(), 'todo_database.db');
 
     return await openDatabase(
       path,
@@ -53,9 +53,9 @@ class TodoProvider {
       onCreate: (db, version) async {
         await db.execute('''
         CREATE TABLE $tableName(
-          $columnId integer primary key autoincrement,
-          $columnContent text not null
-          '''
+          $columnId INTEGER PRIMARY KEY AUTOINCREMENT, 
+          $columnContent TEXT NOT NULL
+          )''',
         );
       },
       onUpgrade: (db, oldVersion, newVersion){}
