@@ -62,10 +62,59 @@ class TodoProvider {
     );
   }
 
-  Future<Todo> insert(Todo todo) async {
+  Future<void> insertTodo(Todo todo) async {
     final db = await database;
+    print("++++updateTodo++++");
     print(todo.toMap());
+    // print(await db.insert(tableName, todo.toMap()));
     todo.id = await db.insert(tableName, todo.toMap());
-    return todo;
+    print(todo.id);
+    // final List<Map<String, dynamic>> elsa = await db.query(tableName, where: "$columnId : ?", whereArgs: [todo.id]);
+    // print(await db.query(tableName, where: "$columnId : ?", whereArgs: [todo.id]));
+  }
+
+  Future<void> updateTodo(Todo todo) async {
+    final db = await database;
+    print("updateTodo : $todo.toMap()");
+    await db.update(
+      tableName, 
+      todo.toMap(), 
+      where: "$columnId = ?", 
+      whereArgs: [todo.id],
+    );
+  }
+
+  Future<void> deleteTodo(int id) async {
+    final db = await database;
+    print("deleteTodo : $id");
+    await db.delete(
+      tableName,
+      where: "$columnId = ?",
+      whereArgs: [id],
+    );
+  }
+
+  Future<List<Todo>> todoItems() async {
+    final Database db = await database;
+    final List<Map<String, dynamic>> maps = await db.query(tableName);
+    return List.generate(maps.length, (index) {
+      return Todo(
+        id: maps[index][columnId],
+        content: maps[index][columnContent],
+      );
+    });
+  }
+
+  Future<void> printTodoItems() async{
+    final Database db = await database;
+    final List<Map<String, dynamic>> maps = await db.query(tableName);
+    print("++++printTodoItems++++");
+    List<Todo> list = List.generate(maps.length, (index) {
+      return Todo(
+        id: maps[index][columnId],
+        content: maps[index][columnContent],
+      );
+    });
+    print(list.map((e) => e.id));
   }
 }

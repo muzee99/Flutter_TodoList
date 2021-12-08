@@ -32,14 +32,16 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  List<TodoItem> items = [];
+  var provider = TodoProvider();
+  List<Todo> items = provider.todoItems();
   final _controller = TextEditingController();
 
-  Future<void> _insertDB() async {
-    var provider = TodoProvider();
-    var todo = Todo(content: _controller.text);
-    provider.insert(todo);
+  Future<void> _insertDB(String content) async {
+    var todo = Todo(content: content);
+    provider.insertTodo(todo);
+    // provider.printTodoItems();
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -60,6 +62,7 @@ class _MyHomePageState extends State<MyHomePage> {
               SizedBox(
                 child: TextField(
                   controller: _controller,
+                  autofocus: true,
                   decoration: InputDecoration(
                     labelText: 'To do',
                     suffixIcon: IconButton(
@@ -69,9 +72,9 @@ class _MyHomePageState extends State<MyHomePage> {
                   ),
                   onSubmitted: (String str) {
                     setState(() {
-                      items.add(TodoItem(content: str));
+                      items.add(Todo(content: str));
                       debugPrint(str);
-                      _insertDB();
+                      _insertDB(str);
                       _controller.clear();
                     });
                   },
