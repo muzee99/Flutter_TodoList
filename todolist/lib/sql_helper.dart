@@ -103,7 +103,13 @@ class TodoProvider {
         content: maps[index][columnContent],
       );
     });
+    // List<Todo> todoList = maps.isNotEmpty ? maps.map((e) => Todo(id:e[columnId], content: e[columnContent])).toList() : [];
+    // return todoList;
   }
+
+  // List<Todo> getTodoItems() {
+    
+  // }
 
   Future<void> printTodoItems() async{
     final Database db = await database;
@@ -115,6 +121,6 @@ class TodoProvider {
         content: maps[index][columnContent],
       );
     });
-    print(list.map((e) => e.id));
+    print(list.map((e) => e.toMap()));
   }
 }

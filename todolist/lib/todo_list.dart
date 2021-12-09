@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'sql_helper.dart';
 
-class TodoItem {
-  const TodoItem({required this.content, required this.isDone});
-  final String content;
-  final bool isDone;
-}
+// class TodoItem {
+//   const TodoItem({required this.content, required this.isDone});
+//   final String content;
+//   final bool isDone;
+// }
 
 typedef ListChangeCallback = Function(Todo item, bool isDone);
 

@@ -33,13 +33,21 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   var provider = TodoProvider();
-  List<Todo> items = provider.todoItems();
+  List<Todo> items = [];
+  // List<Todo> items = await provider.todoItems();
   final _controller = TextEditingController();
 
   Future<void> _insertDB(String content) async {
     var todo = Todo(content: content);
     provider.insertTodo(todo);
     // provider.printTodoItems();
+  }
+
+  void _loadTodoList() async { 
+    List<Todo> newList = await provider.todoItems(); 
+    setState(() { 
+      items = newList; 
+    });
   }
 
   @override
@@ -72,7 +80,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   ),
                   onSubmitted: (String str) {
                     setState(() {
-                      items.add(Todo(content: str));
+                      _loadTodoList();
                       debugPrint(str);
                       _insertDB(str);
                       _controller.clear();
