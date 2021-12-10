@@ -33,10 +33,15 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   var provider = TodoProvider();
-  List<Todo> items = [];
   // List<Todo> items = await provider.todoItems();
   final _controller = TextEditingController();
 
+  @override
+  void initState() {
+    super.initState();
+    _loadTodoList();
+  }
+  
   Future<void> _insertDB(String content) async {
     var todo = Todo(content: content);
     provider.insertTodo(todo);
@@ -50,6 +55,8 @@ class _MyHomePageState extends State<MyHomePage> {
     });
   }
 
+  List<Todo> items = [];
+  
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -70,7 +77,7 @@ class _MyHomePageState extends State<MyHomePage> {
               SizedBox(
                 child: TextField(
                   controller: _controller,
-                  autofocus: true,
+                  // autofocus: true,
                   decoration: InputDecoration(
                     labelText: 'To do',
                     suffixIcon: IconButton(
@@ -80,9 +87,9 @@ class _MyHomePageState extends State<MyHomePage> {
                   ),
                   onSubmitted: (String str) {
                     setState(() {
-                      _loadTodoList();
                       debugPrint(str);
                       _insertDB(str);
+                      _loadTodoList();
                       _controller.clear();
                     });
                   },
