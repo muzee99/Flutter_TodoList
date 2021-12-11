@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'sql_helper.dart';
 import 'todo_list.dart';
 
+// !! cannot connect emulator...
+
 void main() {
   runApp(const MyApp());
 }
