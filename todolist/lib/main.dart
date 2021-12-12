@@ -3,6 +3,7 @@ import 'sql_helper.dart';
 import 'todo_list.dart';
 
 // !! cannot connect emulator...
+// !! ERROR : The emulator process for AVD Pixel_2_API_26 has terminated.
 
 void main() {
   runApp(const MyApp());
