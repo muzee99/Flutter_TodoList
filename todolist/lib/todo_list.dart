@@ -2,31 +2,30 @@ import 'package:flutter/material.dart';
 import 'sql_helper.dart';
 
 // class TodoItem {
-//   const TodoItem({required this.content, required this.isDone});
+//   const TodoItem({required this.content});
 //   final String content;
-//   final bool isDone;
 // }
 
-typedef ListChangeCallback = Function(Todo item, bool isDone);
+typedef ListChangeCallback = Function(Todo item);
 
 class TodoListItem extends StatelessWidget{
 
   TodoListItem({
     required this.item,
-    required this.isDone,
+    // required this.isDone,
     required this.onListChanged,
   }) : super(key: ObjectKey(item));
 
   final Todo item;
-  final bool isDone;
+  // final bool isDone;
   final ListChangeCallback onListChanged;
 
   Color getColor(BuildContext context) {
-    return isDone ? Colors.black54 : Theme.of(context).primaryColor;
+    return item.isDone ? Colors.black54 : Theme.of(context).primaryColor;
   }
 
   TextStyle? getTextStyle(BuildContext context) {
-    if(!isDone) return null;
+    if(!item.isDone) return null;
     return const TextStyle(color: Colors.black54, decoration: TextDecoration.lineThrough);
   }
   
@@ -34,7 +33,7 @@ class TodoListItem extends StatelessWidget{
   Widget build(BuildContext context) {
     return ListTile(
       onTap: () {
-        onListChanged(item, isDone);
+        onListChanged(item);
       },
       leading: CircleAvatar(
         backgroundColor: getColor(context),
@@ -59,9 +58,9 @@ class TodoList extends StatefulWidget {
 class _TodoListState extends State<TodoList> {
   final _todoList = <Todo>{};
 
-  void handleListChanged(Todo item, bool isDone) {
+  void handleListChanged(Todo item) {
     setState(() {
-      if(!isDone) {_todoList.add(item);}
+      if(!item.isDone) {_todoList.add(item);}
       else {_todoList.remove(item);}
     });
   }
@@ -73,7 +72,6 @@ class _TodoListState extends State<TodoList> {
       children: widget.items.map((Todo item) {
         return TodoListItem(
           item: item,
-          isDone: _todoList.contains(item),
           onListChanged: handleListChanged,
         );
       }).toList(),

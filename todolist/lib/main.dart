@@ -2,9 +2,6 @@ import 'package:flutter/material.dart';
 import 'sql_helper.dart';
 import 'todo_list.dart';
 
-// !! cannot connect emulator...
-// !! ERROR : The emulator process for AVD Pixel_2_API_26 has terminated.
-
 void main() {
   runApp(const MyApp());
 }
@@ -36,7 +33,6 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   var provider = TodoProvider();
-  // List<Todo> items = await provider.todoItems();
   final _controller = TextEditingController();
 
   @override
@@ -46,7 +42,7 @@ class _MyHomePageState extends State<MyHomePage> {
   }
   
   Future<void> _insertDB(String content) async {
-    var todo = Todo(content: content);
+    var todo = Todo(content: content, isDone: true);
     provider.insertTodo(todo);
     // provider.printTodoItems();
   }

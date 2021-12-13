@@ -11,15 +11,15 @@ const String columnIsDone = 'isDone';
 class Todo {
   late int? id;
   late String content;
-  // late bool isDone;
+  late bool isDone;
 
-  Todo({this.id, required this.content});
+  Todo({this.id, required this.content, required this.isDone});
 
   Map<String, dynamic> toMap() {
     var map = <String, dynamic> {
       columnId: id,
       columnContent: content,
-      // columnIsDone: isDone,
+      columnIsDone: isDone,
     };
     return map;
   }
@@ -27,7 +27,7 @@ class Todo {
   Todo.fromMap(Map<String, dynamic> map) {
     id = map[columnId];
     content = map[columnContent];
-    // isDone = map[columnIsDone];
+    isDone = map[columnIsDone];
     debugPrint('$id, $content');
   }
   // @override
@@ -54,7 +54,8 @@ class TodoProvider {
         await db.execute('''
         CREATE TABLE $tableName(
           $columnId INTEGER PRIMARY KEY AUTOINCREMENT, 
-          $columnContent TEXT NOT NULL
+          $columnContent TEXT NOT NULL,
+          $columnIsDone BOOLEAN
           )''',
         );
       },
@@ -101,6 +102,7 @@ class TodoProvider {
       return Todo(
         id: maps[index][columnId],
         content: maps[index][columnContent],
+        isDone: maps[index][columnIsDone],
       );
     });
     // List<Todo> todoList = maps.isNotEmpty ? maps.map((e) => Todo(id:e[columnId], content: e[columnContent])).toList() : [];
@@ -119,6 +121,7 @@ class TodoProvider {
       return Todo(
         id: maps[index][columnId],
         content: maps[index][columnContent],
+        isDone: maps[index][columnIsDone],
       );
     });
     print(list.map((e) => e.toMap()));
