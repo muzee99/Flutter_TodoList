@@ -42,7 +42,7 @@ class _MyHomePageState extends State<MyHomePage> {
   }
   
   Future<void> _insertDB(String content) async {
-    var todo = Todo(content: content, isDone: true);
+    var todo = Todo(content: content, isDone: 1);
     provider.insertTodo(todo);
     // provider.printTodoItems();
   }
@@ -86,7 +86,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   ),
                   onSubmitted: (String str) {
                     setState(() {
-                      debugPrint(str);
+                      // debugPrint(str);
                       _insertDB(str);
                       _loadTodoList();
                       _controller.clear();

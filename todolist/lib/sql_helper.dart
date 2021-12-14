@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:flutter/cupertino.dart';
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:flutter/foundation.dart';
@@ -11,7 +12,7 @@ const String columnIsDone = 'isDone';
 class Todo {
   late int? id;
   late String content;
-  late bool isDone;
+  late int isDone;
 
   Todo({this.id, required this.content, required this.isDone});
 
@@ -28,7 +29,7 @@ class Todo {
     id = map[columnId];
     content = map[columnContent];
     isDone = map[columnIsDone];
-    debugPrint('$id, $content');
+    debugPrint('$id, $content, $isDone');
   }
   // @override
   // String toString() {
@@ -45,7 +46,9 @@ class TodoProvider {
   }
 
   initDB() async {
-    String path = join(await getDatabasesPath(), 'todo_database.db');
+    String path = join(await getDatabasesPath(), 'todo_database2.db');
+
+    print("in initDB() open db");
 
     return await openDatabase(
       path,
@@ -55,12 +58,13 @@ class TodoProvider {
         CREATE TABLE $tableName(
           $columnId INTEGER PRIMARY KEY AUTOINCREMENT, 
           $columnContent TEXT NOT NULL,
-          $columnIsDone BOOLEAN
+          $columnIsDone INTEGER NOT NULL
           )''',
         );
       },
       onUpgrade: (db, oldVersion, newVersion){}
     );
+
   }
 
   Future<void> insertTodo(Todo todo) async {
@@ -98,6 +102,8 @@ class TodoProvider {
   Future<List<Todo>> todoItems() async {
     final Database db = await database;
     final List<Map<String, dynamic>> maps = await db.query(tableName);
+    print(maps);
+    if(!maps.isNotEmpty) return [];
     return List.generate(maps.length, (index) {
       return Todo(
         id: maps[index][columnId],

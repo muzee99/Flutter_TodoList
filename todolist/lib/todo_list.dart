@@ -21,11 +21,12 @@ class TodoListItem extends StatelessWidget{
   final ListChangeCallback onListChanged;
 
   Color getColor(BuildContext context) {
-    return item.isDone ? Colors.black54 : Theme.of(context).primaryColor;
+    if(item.isDone==0) return Colors.black54;
+    return Theme.of(context).primaryColor;
   }
 
   TextStyle? getTextStyle(BuildContext context) {
-    if(!item.isDone) return null;
+    if(item.isDone==0) return null;
     return const TextStyle(color: Colors.black54, decoration: TextDecoration.lineThrough);
   }
   
@@ -60,7 +61,7 @@ class _TodoListState extends State<TodoList> {
 
   void handleListChanged(Todo item) {
     setState(() {
-      if(!item.isDone) {_todoList.add(item);}
+      if(item.isDone==0) {_todoList.add(item);}
       else {_todoList.remove(item);}
     });
   }
