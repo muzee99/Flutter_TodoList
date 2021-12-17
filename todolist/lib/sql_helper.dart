@@ -69,7 +69,7 @@ class TodoProvider {
 
   Future<void> insertTodo(Todo todo) async {
     final db = await database;
-    print("++++updateTodo++++");
+    print("++++insertTodo++++");
     print(todo.toMap());
     // print(await db.insert(tableName, todo.toMap()));
     todo.id = await db.insert(tableName, todo.toMap());
@@ -80,7 +80,8 @@ class TodoProvider {
 
   Future<void> updateTodo(Todo todo) async {
     final db = await database;
-    print("updateTodo : $todo.toMap()");
+    print("++++updateTodo++++");
+    print(todo.toMap());
     await db.update(
       tableName, 
       todo.toMap(), 

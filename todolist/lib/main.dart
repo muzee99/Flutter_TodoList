@@ -85,6 +85,8 @@ class _TodoListState extends State<TodoList> {
   final _todoList = <Todo>{};
 
   void handleListChanged(Todo item) {
+    print('ListTile of TodoList is on Tapped. The state of isDone');
+    print(item.isDone);
     setState(() {
       if(item.isDone==0) {_todoList.add(item);}
       else {_todoList.remove(item);}
@@ -108,11 +110,21 @@ class _TodoListState extends State<TodoList> {
 class _MyHomePageState extends State<MyHomePage> {
   var provider = TodoProvider();
   final _controller = TextEditingController();
+  final _todoList = <Todo>{};
 
   @override
   void initState() {
     super.initState();
     _loadTodoList();
+  }
+
+  void handleListChanged(Todo item) {
+    print('ListTile of TodoList is on Tapped. The state of isDone');
+    print(item.isDone);
+    setState(() {
+      if(item.isDone==0) {_todoList.add(item);}
+      else {_todoList.remove(item);}
+    });
   }
   
   
@@ -170,8 +182,17 @@ class _MyHomePageState extends State<MyHomePage> {
                 ),
               ),
               Expanded(
-                child: TodoList(
-                  items: items,
+                // child: TodoList(
+                //   items: items,
+                // ),
+                child: ListView(
+                  padding: const EdgeInsets.symmetric(vertical: 8.0),
+                  children: items.map((Todo item) {
+                    return TodoListItem(
+                      item: item,
+                      onListChanged: handleListChanged,
+                    );
+                  }).toList(),
                 ),
               ),
             ],
