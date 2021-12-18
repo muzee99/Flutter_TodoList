@@ -48,7 +48,7 @@ class TodoProvider {
   initDB() async {
     String path = join(await getDatabasesPath(), 'todo_database2.db');
 
-    print("in initDB() open db");
+    // print("in initDB() open db");
 
     return await openDatabase(
       path,
@@ -81,13 +81,13 @@ class TodoProvider {
   Future<void> updateTodo(Todo todo) async {
     final db = await database;
     print("++++updateTodo++++");
-    print(todo.toMap());
     await db.update(
       tableName, 
       todo.toMap(), 
       where: "$columnId = ?", 
       whereArgs: [todo.id],
     );
+    print(todo.toMap());
   }
 
   Future<void> deleteTodo(int id) async {

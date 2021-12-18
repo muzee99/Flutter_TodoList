@@ -51,7 +51,7 @@ class TodoListItem extends StatelessWidget{
   }
 
   TextStyle? getTextStyle(BuildContext context) {
-    if(item.isDone==0) return null;
+    if(item.isDone==1) return null;
     return const TextStyle(color: Colors.black54, decoration: TextDecoration.lineThrough);
   }
   
@@ -122,8 +122,19 @@ class _MyHomePageState extends State<MyHomePage> {
     print('ListTile of TodoList is on Tapped. The state of isDone');
     print(item.isDone);
     setState(() {
-      if(item.isDone==0) {_todoList.add(item);}
-      else {_todoList.remove(item);}
+      var newItem;
+      if(item.isDone==0) {
+        print('item.isDone is 0.');
+        newItem = Todo(content: item.content, id: item.id, isDone: 1);
+        _todoList.add(item);
+      }
+      else {
+        print('item.isDone is 1.');
+        newItem = Todo(content: item.content, id: item.id, isDone: 0);
+        _todoList.remove(item);
+      }
+      provider.updateTodo(newItem);
+      _loadTodoList();
     });
   }
   
