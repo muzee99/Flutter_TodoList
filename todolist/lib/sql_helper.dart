@@ -90,7 +90,9 @@ class TodoProvider {
     print(todo.toMap());
   }
 
-  Future<void> deleteTodo(int id) async {
+  Future<void> deleteTodo(int? id) async {
+    print('++++deleteTodo++++');
+    print(id);
     final db = await database;
     print("deleteTodo : $id");
     await db.delete(

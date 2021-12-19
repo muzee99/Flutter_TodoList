@@ -31,86 +31,11 @@ class MyHomePage extends StatefulWidget {
   State<MyHomePage> createState() => _MyHomePageState();
 }
 
-typedef ListChangeCallback = Function(Todo item);
-
-class TodoListItem extends StatelessWidget{
-
-  TodoListItem({
-    required this.item,
-    // required this.isDone,
-    required this.onListChanged,
-  }) : super(key: ObjectKey(item));
-
-  final Todo item;
-  // final bool isDone;
-  final ListChangeCallback onListChanged;
-
-  Color getColor(BuildContext context) {
-    if(item.isDone==0) return Colors.black54;
-    return Theme.of(context).primaryColor;
-  }
-
-  TextStyle? getTextStyle(BuildContext context) {
-    if(item.isDone==1) return null;
-    return const TextStyle(color: Colors.black54, decoration: TextDecoration.lineThrough);
-  }
-  
-  @override
-  Widget build(BuildContext context) {
-    return ListTile(
-      onTap: () {
-        onListChanged(item);
-      },
-      leading: CircleAvatar(
-        backgroundColor: getColor(context),
-      ),
-      title: Text(
-        item.content, 
-        style: getTextStyle(context),
-      ),
-    );
-  }
-}
-
-class TodoList extends StatefulWidget {
-  TodoList({required this.items, Key?key}) : super(key:key);
-
-  List<Todo> items;
-
-  @override
-  _TodoListState createState() => _TodoListState();
-}
-
-class _TodoListState extends State<TodoList> {
-  final _todoList = <Todo>{};
-
-  void handleListChanged(Todo item) {
-    print('ListTile of TodoList is on Tapped. The state of isDone');
-    print(item.isDone);
-    setState(() {
-      if(item.isDone==0) {_todoList.add(item);}
-      else {_todoList.remove(item);}
-    });
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return ListView(
-      padding: const EdgeInsets.symmetric(vertical: 8.0),
-      children: widget.items.map((Todo item) {
-        return TodoListItem(
-          item: item,
-          onListChanged: handleListChanged,
-        );
-      }).toList(),
-    );
-  }
-}
-
 class _MyHomePageState extends State<MyHomePage> {
   var provider = TodoProvider();
   final _controller = TextEditingController();
   final _todoList = <Todo>{};
+  List<Todo> items = [];
 
   @override
   void initState() {
@@ -138,7 +63,6 @@ class _MyHomePageState extends State<MyHomePage> {
     });
   }
   
-  
   Future<void> _insertDB(String content) async {
     var todo = Todo(content: content, isDone: 1);
     provider.insertTodo(todo);
@@ -151,9 +75,22 @@ class _MyHomePageState extends State<MyHomePage> {
       items = newList; 
     });
   }
-
-  List<Todo> items = [];
   
+  void _deleteDone() {
+    setState(() {
+      print('in _deleteDone()');
+      for(int i=0; i<items.length; i++) {
+        print('_delete() >> for');
+        if(items[i].isDone==0) provider.deleteTodo(items[i].id);
+      }
+      // items.map((e) {
+      //   print('_deleteDone() >> items.map');
+      //   if(e.isDone==0) provider.deleteTodo(e.id);
+      // });
+      _loadTodoList();
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -167,6 +104,7 @@ class _MyHomePageState extends State<MyHomePage> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
+              OutlinedButton(onPressed: _deleteDone, child: const Text('delete Done')),
               const Text(
                 'Please input what to do.',
                 // style: TextStyle(fontFamily: "SooMyeongjo", fontSize: 20),

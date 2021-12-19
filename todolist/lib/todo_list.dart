@@ -26,7 +26,7 @@ class TodoListItem extends StatelessWidget{
   }
 
   TextStyle? getTextStyle(BuildContext context) {
-    if(item.isDone==0) return null;
+    if(item.isDone==1) return null;
     return const TextStyle(color: Colors.black54, decoration: TextDecoration.lineThrough);
   }
   
@@ -47,35 +47,35 @@ class TodoListItem extends StatelessWidget{
   }
 }
 
-class TodoList extends StatefulWidget {
-  TodoList({required this.items, Key?key}) : super(key:key);
+// class TodoList extends StatefulWidget {
+//   TodoList({required this.items, Key?key}) : super(key:key);
 
-  List<Todo> items;
+//   List<Todo> items;
 
-  @override
-  _TodoListState createState() => _TodoListState();
-}
+//   @override
+//   _TodoListState createState() => _TodoListState();
+// }
 
-class _TodoListState extends State<TodoList> {
-  final _todoList = <Todo>{};
+// class _TodoListState extends State<TodoList> {
+//   final _todoList = <Todo>{};
 
-  void handleListChanged(Todo item) {
-    setState(() {
-      if(item.isDone==0) {_todoList.add(item);}
-      else {_todoList.remove(item);}
-    });
-  }
+//   void handleListChanged(Todo item) {
+//     setState(() {
+//       if(item.isDone==0) {_todoList.add(item);}
+//       else {_todoList.remove(item);}
+//     });
+//   }
 
-  @override
-  Widget build(BuildContext context) {
-    return ListView(
-      padding: const EdgeInsets.symmetric(vertical: 8.0),
-      children: widget.items.map((Todo item) {
-        return TodoListItem(
-          item: item,
-          onListChanged: handleListChanged,
-        );
-      }).toList(),
-    );
-  }
-}
+//   @override
+//   Widget build(BuildContext context) {
+//     return ListView(
+//       padding: const EdgeInsets.symmetric(vertical: 8.0),
+//       children: widget.items.map((Todo item) {
+//         return TodoListItem(
+//           item: item,
+//           onListChanged: handleListChanged,
+//         );
+//       }).toList(),
+//     );
+//   }
+// }
