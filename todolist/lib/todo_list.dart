@@ -30,12 +30,16 @@ class TodoListItem extends StatelessWidget{
     return const TextStyle(color: Colors.black54, decoration: TextDecoration.lineThrough);
   }
   
+  void _settingOnAnItem() {
+    print('on long tap');
+  }
   @override
   Widget build(BuildContext context) {
     return ListTile(
       onTap: () {
         onListChanged(item);
       },
+      onLongPress: _settingOnAnItem,
       leading: CircleAvatar(
         backgroundColor: getColor(context),
       ),

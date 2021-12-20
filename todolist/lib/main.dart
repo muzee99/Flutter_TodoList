@@ -78,9 +78,7 @@ class _MyHomePageState extends State<MyHomePage> {
   
   void _deleteDone() {
     setState(() {
-      print('in _deleteDone()');
       for(int i=0; i<items.length; i++) {
-        print('_delete() >> for');
         if(items[i].isDone==0) provider.deleteTodo(items[i].id);
       }
       // items.map((e) {
@@ -104,7 +102,12 @@ class _MyHomePageState extends State<MyHomePage> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
-              OutlinedButton(onPressed: _deleteDone, child: const Text('delete Done')),
+              OutlinedButton(
+                onPressed: _deleteDone, 
+                child: const Text('delete Done')),
+              OutlinedButton(
+                onPressed: _deleteDone, 
+                child: const Text('delete All')),
               const Text(
                 'Please input what to do.',
                 // style: TextStyle(fontFamily: "SooMyeongjo", fontSize: 20),
