@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'sql_helper.dart';
 import 'todo_list.dart';
 //
@@ -86,6 +87,37 @@ class _MyHomePageState extends State<MyHomePage> {
       //   if(e.isDone==0) provider.deleteTodo(e.id);
       // });
       _loadTodoList();
+      Fluttertoast.showToast(
+        msg: "Done items are all deleted.",
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.CENTER,
+        timeInSecForIosWeb: 1,
+        backgroundColor: Colors.grey,
+        textColor: Colors.white,
+        fontSize: 16.0
+      );
+    });
+  }
+
+  void _deleteAll() {
+    setState(() {
+      for(int i=0; i<items.length; i++) {
+        provider.deleteTodo(items[i].id);
+      }
+      // items.map((e) {
+      //   print('_deleteDone() >> items.map');
+      //   if(e.isDone==0) provider.deleteTodo(e.id);
+      // });
+      _loadTodoList();
+      Fluttertoast.showToast(
+        msg: "All items are deleted.",
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.CENTER,
+        timeInSecForIosWeb: 1,
+        backgroundColor: Colors.grey,
+        textColor: Colors.white,
+        fontSize: 16.0
+      );
     });
   }
 
@@ -106,7 +138,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 onPressed: _deleteDone, 
                 child: const Text('delete Done')),
               OutlinedButton(
-                onPressed: _deleteDone, 
+                onPressed: _deleteAll, 
                 child: const Text('delete All')),
               const Text(
                 'Please input what to do.',

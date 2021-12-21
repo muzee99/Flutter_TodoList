@@ -33,6 +33,7 @@ class TodoListItem extends StatelessWidget{
   void _settingOnAnItem() {
     print('on long tap');
   }
+
   @override
   Widget build(BuildContext context) {
     return ListTile(
