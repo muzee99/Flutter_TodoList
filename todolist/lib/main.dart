@@ -134,12 +134,16 @@ class _MyHomePageState extends State<MyHomePage> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
-              OutlinedButton(
-                onPressed: _deleteDone, 
-                child: const Text('delete Done')),
-              OutlinedButton(
-                onPressed: _deleteAll, 
-                child: const Text('delete All')),
+              Row(
+                children: [
+                  OutlinedButton(
+                    onPressed: _deleteDone, 
+                    child: const Text('delete Done')),
+                  OutlinedButton(
+                    onPressed: _deleteAll, 
+                    child: const Text('delete All')),
+                ],
+              ),
               const Text(
                 'Please input what to do.',
                 // style: TextStyle(fontFamily: "SooMyeongjo", fontSize: 20),
@@ -157,7 +161,6 @@ class _MyHomePageState extends State<MyHomePage> {
                   ),
                   onSubmitted: (String str) {
                     setState(() {
-                      // debugPrint(str);
                       _insertDB(str);
                       _loadTodoList();
                       _controller.clear();

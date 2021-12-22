@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'sql_helper.dart';
 
 // class TodoItem {
@@ -30,9 +31,9 @@ class TodoListItem extends StatelessWidget{
     return const TextStyle(color: Colors.black54, decoration: TextDecoration.lineThrough);
   }
   
-  void _settingOnAnItem() {
-    print('on long tap');
-  }
+  // void _settingOnAnItem(BuildContext context) {
+  //   print('on long tap');
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -40,7 +41,33 @@ class TodoListItem extends StatelessWidget{
       onTap: () {
         onListChanged(item);
       },
-      onLongPress: _settingOnAnItem,
+      onLongPress: () {
+        showModalBottomSheet(
+          context: context, 
+          builder: (BuildContext context) {
+            return Container(
+              height: 200,
+              child: Center(
+                child: ListView(
+                  children: [
+                    ListTile(
+                      title: const Text('delete'),
+                      onTap: () {
+                        Fluttertoast.showToast(msg: 'delete');
+                      },
+                    ),
+                    ListTile(
+                      title: const Text('edit'),
+                      onTap:() {
+                        Fluttertoast.showToast(msg: 'edit');
+                      },
+                    ),
+                  ],
+                ),
+              ),
+            );
+        });
+      },
       leading: CircleAvatar(
         backgroundColor: getColor(context),
       ),
