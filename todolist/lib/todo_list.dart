@@ -8,18 +8,25 @@ import 'sql_helper.dart';
 // }
 
 typedef ListChangeCallback = Function(Todo item);
+typedef EditListTile = Function(Todo item);
+typedef DeleteListTile = Function(Todo item);
 
 class TodoListItem extends StatelessWidget{
 
   TodoListItem({
     required this.item,
     // required this.isDone,
+    required this.editListTile,
+    required this.deleteListTile,
     required this.onListChanged,
+    
   }) : super(key: ObjectKey(item));
 
   final Todo item;
   // final bool isDone;
   final ListChangeCallback onListChanged;
+  final EditListTile editListTile;
+  final DeleteListTile deleteListTile;
 
   Color getColor(BuildContext context) {
     if(item.isDone==0) return Colors.black54;
@@ -53,13 +60,14 @@ class TodoListItem extends StatelessWidget{
                     ListTile(
                       title: const Text('delete'),
                       onTap: () {
-                        Fluttertoast.showToast(msg: 'delete');
+                        deleteListTile(item);
                       },
                     ),
                     ListTile(
                       title: const Text('edit'),
                       onTap:() {
-                        Fluttertoast.showToast(msg: 'edit');
+                        editListTile(item);
+                        // Fluttertoast.showToast(msg: 'edit');
                       },
                     ),
                   ],

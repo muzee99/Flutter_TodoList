@@ -178,6 +178,13 @@ class _MyHomePageState extends State<MyHomePage> {
                     return TodoListItem(
                       item: item,
                       onListChanged: handleListChanged,
+                      deleteListTile: (item) {
+                        provider.deleteTodo(item.id);
+                        _loadTodoList();
+                      },
+                      editListTile: (item) {
+                        Fluttertoast.showToast(msg: 'edit');
+                      },
                     );
                   }).toList(),
                 ),
