@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'sql_helper.dart';
 import 'todo_list.dart';
-//make branch development
+
 void main() {
   runApp(const MyApp());
 }
@@ -50,12 +50,12 @@ class _MyHomePageState extends State<MyHomePage> {
     setState(() {
       var newItem;
       if(item.isDone==0) {
-        print('item.isDone is 0.');
+        // print('item.isDone is 0.');
         newItem = Todo(content: item.content, id: item.id, isDone: 1);
         _todoList.add(item);
       }
       else {
-        print('item.isDone is 1.');
+        // print('item.isDone is 1.');
         newItem = Todo(content: item.content, id: item.id, isDone: 0);
         _todoList.remove(item);
       }
@@ -121,6 +121,12 @@ class _MyHomePageState extends State<MyHomePage> {
     });
   }
 
+  void _editTodo(Todo item, String content) {
+    Todo newItem = Todo(content: content, id: item.id, isDone: item.isDone);
+    provider.updateTodo(newItem);
+    _loadTodoList();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -183,7 +189,50 @@ class _MyHomePageState extends State<MyHomePage> {
                         _loadTodoList();
                       },
                       editListTile: (item) {
-                        Fluttertoast.showToast(msg: 'edit');
+                        // Fluttertoast.showToast(msg: 'edit');
+                        showDialog(
+                          context: context, 
+                          builder: (BuildContext context) {
+                            return AlertDialog(
+                              title: const Text('edit todo'),
+                              content: const Text('popup'),
+                              actions: [
+                                TextButton(
+                                  child: SizedBox(
+                                    child: TextField(
+                                      controller: _controller,
+                                      // autofocus: true,
+                                      decoration: InputDecoration(
+                                        labelText: 'To do',
+                                        suffixIcon: IconButton(
+                                          onPressed: _controller.clear, 
+                                          icon: const Icon(Icons.clear),
+                                        ),
+                                      ),
+                                      onSubmitted: (String str) {
+                                        setState(() {
+                                          _insertDB(str);
+                                          _loadTodoList();
+                                          _controller.clear();
+                                        });
+                                      },
+                                    ),
+                                  ),
+                                  onPressed: () {
+                                    print('edit');
+                                    _editTodo(item, 'edit');
+                                    Navigator.of(context).pop();
+                                  }
+                                ),
+                                TextButton(
+                                  child: const Text('cancel'),
+                                  onPressed: () {
+                                    Navigator.of(context).pop();
+                                  }
+                                )
+                              ],
+                            );
+                          });
                       },
                     );
                   }).toList(),
