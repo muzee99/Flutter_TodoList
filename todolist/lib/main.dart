@@ -34,7 +34,8 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   var provider = TodoProvider();
-  final _controller = TextEditingController();
+  final _addTextController = TextEditingController();
+  final _editTextController = TextEditingController();
   final _todoList = <Todo>{};
   List<Todo> items = [];
 
@@ -123,8 +124,11 @@ class _MyHomePageState extends State<MyHomePage> {
 
   void _editTodo(Todo item, String content) {
     Todo newItem = Todo(content: content, id: item.id, isDone: item.isDone);
-    provider.updateTodo(newItem);
-    _loadTodoList();
+    setState(() {
+      provider.updateTodo(newItem);
+      _loadTodoList();
+      
+    });
   }
 
   @override
@@ -156,12 +160,12 @@ class _MyHomePageState extends State<MyHomePage> {
               ),
               SizedBox(
                 child: TextField(
-                  controller: _controller,
+                  controller: _addTextController,
                   // autofocus: true,
                   decoration: InputDecoration(
                     labelText: 'To do',
                     suffixIcon: IconButton(
-                      onPressed: _controller.clear, 
+                      onPressed: _addTextController.clear, 
                       icon: const Icon(Icons.clear),
                     ),
                   ),
@@ -169,7 +173,7 @@ class _MyHomePageState extends State<MyHomePage> {
                     setState(() {
                       _insertDB(str);
                       _loadTodoList();
-                      _controller.clear();
+                      _addTextController.clear();
                     });
                   },
                 ),
@@ -197,36 +201,36 @@ class _MyHomePageState extends State<MyHomePage> {
                               title: const Text('edit todo'),
                               content: const Text('popup'),
                               actions: [
-                                TextButton(
-                                  child: SizedBox(
+                                  SizedBox(
                                     child: TextField(
-                                      controller: _controller,
+                                      controller: _editTextController,
                                       // autofocus: true,
                                       decoration: InputDecoration(
-                                        labelText: 'To do',
+                                        labelText: 'Edit Todo',
                                         suffixIcon: IconButton(
-                                          onPressed: _controller.clear, 
+                                          onPressed: _editTextController.clear, 
                                           icon: const Icon(Icons.clear),
                                         ),
                                       ),
                                       onSubmitted: (String str) {
-                                        setState(() {
-                                          _insertDB(str);
-                                          _loadTodoList();
-                                          _controller.clear();
-                                        });
+                                        _editTodo(item, _editTextController.text);
+                                        _editTextController.clear();
+                                        Navigator.of(context).pop();
                                       },
                                     ),
                                   ),
+                                TextButton(
+                                  child: const Text('edit'),
                                   onPressed: () {
-                                    print('edit');
-                                    _editTodo(item, 'edit');
+                                    _editTodo(item, _editTextController.text);
+                                    _editTextController.clear();
                                     Navigator.of(context).pop();
                                   }
                                 ),
                                 TextButton(
                                   child: const Text('cancel'),
                                   onPressed: () {
+                                    _editTextController.clear();
                                     Navigator.of(context).pop();
                                   }
                                 )
