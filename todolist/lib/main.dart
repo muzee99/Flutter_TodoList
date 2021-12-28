@@ -127,8 +127,8 @@ class _MyHomePageState extends State<MyHomePage> {
     setState(() {
       provider.updateTodo(newItem);
       _loadTodoList();
-      
     });
+    Fluttertoast.showToast(msg: 'edit todo item');
   }
 
   @override
@@ -190,6 +190,7 @@ class _MyHomePageState extends State<MyHomePage> {
                       onListChanged: handleListChanged,
                       deleteListTile: (item) {
                         provider.deleteTodo(item.id);
+                        Fluttertoast.showToast(msg: 'delete todo item');
                         _loadTodoList();
                       },
                       editListTile: (item) {
@@ -199,7 +200,6 @@ class _MyHomePageState extends State<MyHomePage> {
                           builder: (BuildContext context) {
                             return AlertDialog(
                               title: const Text('edit todo'),
-                              content: const Text('popup'),
                               actions: [
                                   SizedBox(
                                     child: TextField(
@@ -219,21 +219,25 @@ class _MyHomePageState extends State<MyHomePage> {
                                       },
                                     ),
                                   ),
-                                TextButton(
-                                  child: const Text('edit'),
-                                  onPressed: () {
-                                    _editTodo(item, _editTextController.text);
-                                    _editTextController.clear();
-                                    Navigator.of(context).pop();
-                                  }
-                                ),
-                                TextButton(
-                                  child: const Text('cancel'),
-                                  onPressed: () {
-                                    _editTextController.clear();
-                                    Navigator.of(context).pop();
-                                  }
-                                )
+                                  Row(
+                                    children: [
+                                      TextButton(
+                                        child: const Text('edit'),
+                                        onPressed: () {
+                                          _editTodo(item, _editTextController.text);
+                                          _editTextController.clear();
+                                          Navigator.of(context).pop();
+                                        }
+                                      ),
+                                      TextButton(
+                                        child: const Text('cancel'),
+                                        onPressed: () {
+                                          _editTextController.clear();
+                                          Navigator.of(context).pop();
+                                        }
+                                      )
+                                    ]
+                                  ),
                               ],
                             );
                           });
