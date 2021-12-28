@@ -61,11 +61,13 @@ class TodoListItem extends StatelessWidget{
                       title: const Text('delete'),
                       onTap: () {
                         deleteListTile(item);
+                        Navigator.of(context).pop();
                       },
                     ),
                     ListTile(
                       title: const Text('edit'),
                       onTap:() {
+                        Navigator.of(context).pop();
                         editListTile(item);
                         // Fluttertoast.showToast(msg: 'edit');
                       },
