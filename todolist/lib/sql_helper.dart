@@ -69,32 +69,32 @@ class TodoProvider {
 
   Future<void> insertTodo(Todo todo) async {
     final db = await database;
-    print("++++insertTodo++++");
-    print(todo.toMap());
+    debugPrint("++++insertTodo++++");
+    // print(todo.toMap());
     // print(await db.insert(tableName, todo.toMap()));
     todo.id = await db.insert(tableName, todo.toMap());
-    print(todo.id);
+    // print(todo.id);
     // final List<Map<String, dynamic>> elsa = await db.query(tableName, where: "$columnId : ?", whereArgs: [todo.id]);
     // print(await db.query(tableName, where: "$columnId : ?", whereArgs: [todo.id]));
   }
 
   Future<void> updateTodo(Todo todo) async {
     final db = await database;
-    print("++++updateTodo++++");
+    debugPrint("++++updateTodo++++");
     await db.update(
       tableName, 
       todo.toMap(), 
       where: "$columnId = ?", 
       whereArgs: [todo.id],
     );
-    print(todo.toMap());
+    // print(todo.toMap());
   }
 
   Future<void> deleteTodo(int? id) async {
-    print('++++deleteTodo++++');
-    print(id);
+    debugPrint('++++deleteTodo++++');
+    // print(id);
     final db = await database;
-    print("deleteTodo : $id");
+    debugPrint("deleteTodo : $id");
     await db.delete(
       tableName,
       where: "$columnId = ?",
@@ -105,7 +105,7 @@ class TodoProvider {
   Future<List<Todo>> todoItems() async {
     final Database db = await database;
     final List<Map<String, dynamic>> maps = await db.query(tableName);
-    print(maps);
+    // print(maps);
     if(!maps.isNotEmpty) return [];
     return List.generate(maps.length, (index) {
       return Todo(
@@ -121,18 +121,4 @@ class TodoProvider {
   // List<Todo> getTodoItems() {
     
   // }
-
-  Future<void> printTodoItems() async{
-    final Database db = await database;
-    final List<Map<String, dynamic>> maps = await db.query(tableName);
-    print("++++printTodoItems++++");
-    List<Todo> list = List.generate(maps.length, (index) {
-      return Todo(
-        id: maps[index][columnId],
-        content: maps[index][columnContent],
-        isDone: maps[index][columnIsDone],
-      );
-    });
-    print(list.map((e) => e.toMap()));
-  }
 }
