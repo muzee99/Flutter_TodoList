@@ -46,10 +46,10 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   void handleListChanged(Todo item) {
-    print('ListTile of TodoList is on Tapped. The state of isDone');
-    print(item.isDone);
+    // print('ListTile of TodoList is on Tapped. The state of isDone');
+    // print(item.isDone);
     setState(() {
-      var newItem;
+      Todo newItem;
       if(item.isDone==0) {
         // print('item.isDone is 0.');
         newItem = Todo(content: item.content, id: item.id, isDone: 1);
