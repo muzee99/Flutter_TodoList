@@ -16,7 +16,7 @@ class MyApp extends StatelessWidget {
       title: 'Flutter Todo List',
       theme: ThemeData(
         fontFamily: 'SooMyeongjo',
-        primarySwatch: Colors.yellow,
+        primarySwatch: Colors.amber,
       ),
       home: const MyHomePage(title: 'Todo List'),
     );
@@ -136,6 +136,8 @@ class _MyHomePageState extends State<MyHomePage> {
     return Scaffold(
       appBar: AppBar( 
         title: Text(widget.title),
+        centerTitle: true,
+        leading: IconButton(icon: const Icon(Icons.menu), onPressed: () {debugPrint('menu');},),
       ),
       body: Center(
         child: Container(
@@ -154,10 +156,10 @@ class _MyHomePageState extends State<MyHomePage> {
                     child: const Text('delete All')),
                 ],
               ),
-              const Text(
-                'Please input what to do.',
-                // style: TextStyle(fontFamily: "SooMyeongjo", fontSize: 20),
-              ),
+              // const Text(
+              //   'Please input what to do.',
+              //   // style: TextStyle(fontFamily: "SooMyeongjo", fontSize: 20),
+              // ),
               SizedBox(
                 child: TextField(
                   controller: _addTextController,
@@ -200,44 +202,40 @@ class _MyHomePageState extends State<MyHomePage> {
                           builder: (BuildContext context) {
                             return AlertDialog(
                               title: const Text('edit todo'),
-                              actions: [
-                                  SizedBox(
-                                    child: TextField(
-                                      controller: _editTextController,
-                                      // autofocus: true,
-                                      decoration: InputDecoration(
-                                        labelText: 'Edit Todo',
-                                        suffixIcon: IconButton(
-                                          onPressed: _editTextController.clear, 
-                                          icon: const Icon(Icons.clear),
+                              content: SingleChildScrollView(
+                                child: Container(
+                                  width: double.infinity,
+                                  child: Column(
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: [
+                                      TextField(
+                                        controller: _editTextController,
+                                        keyboardType: TextInputType.text,
+                                        decoration: InputDecoration(
+                                            hintText: 'Edit Todo',
+                                            suffixIcon: IconButton(onPressed: _editTextController.clear, icon: const Icon(Icons.clear)),
                                         ),
                                       ),
-                                      onSubmitted: (String str) {
-                                        _editTodo(item, _editTextController.text);
-                                        _editTextController.clear();
-                                        Navigator.of(context).pop();
-                                      },
-                                    ),
+                                    ],
                                   ),
-                                  Row(
-                                    children: [
-                                      TextButton(
-                                        child: const Text('edit'),
-                                        onPressed: () {
-                                          _editTodo(item, _editTextController.text);
-                                          _editTextController.clear();
-                                          Navigator.of(context).pop();
-                                        }
-                                      ),
-                                      TextButton(
-                                        child: const Text('cancel'),
-                                        onPressed: () {
-                                          _editTextController.clear();
-                                          Navigator.of(context).pop();
-                                        }
-                                      )
-                                    ]
-                                  ),
+                                ),
+                              ),
+                              actions: [
+                                TextButton(
+                                  child: const Text('edit'),
+                                  onPressed: () {
+                                    _editTodo(item, _editTextController.text);
+                                    _editTextController.clear();
+                                    Navigator.of(context).pop();
+                                  }
+                                ),
+                                TextButton(
+                                  child: const Text('cancel'),
+                                  onPressed: () {
+                                    _editTextController.clear();
+                                    Navigator.of(context).pop();
+                                  }
+                                )
                               ],
                             );
                           });
