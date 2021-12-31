@@ -1,11 +1,5 @@
 import 'package:flutter/material.dart';
-// import 'package:fluttertoast/fluttertoast.dart';
 import 'sql_helper.dart';
-
-// class TodoItem {
-//   const TodoItem({required this.content});
-//   final String content;
-// }
 
 typedef ListChangeCallback = Function(Todo item);
 typedef EditListTile = Function(Todo item);
@@ -15,7 +9,6 @@ class TodoListItem extends StatelessWidget{
 
   TodoListItem({
     required this.item,
-    // required this.isDone,
     required this.editListTile,
     required this.deleteListTile,
     required this.onListChanged,
@@ -23,7 +16,6 @@ class TodoListItem extends StatelessWidget{
   }) : super(key: ObjectKey(item));
 
   final Todo item;
-  // final bool isDone;
   final ListChangeCallback onListChanged;
   final EditListTile editListTile;
   final DeleteListTile deleteListTile;
@@ -37,10 +29,6 @@ class TodoListItem extends StatelessWidget{
     if(item.isDone==1) return null;
     return const TextStyle(color: Colors.black54, decoration: TextDecoration.lineThrough);
   }
-  
-  // void _settingOnAnItem(BuildContext context) {
-  //   print('on long tap');
-  // }
 
   @override
   Widget build(BuildContext context) {
@@ -69,7 +57,6 @@ class TodoListItem extends StatelessWidget{
                       onTap:() {
                         Navigator.of(context).pop();
                         editListTile(item);
-                        // Fluttertoast.showToast(msg: 'edit');
                       },
                     ),
                   ],
