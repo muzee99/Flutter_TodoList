@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'sql_helper.dart';
 import 'todo_list.dart';
+import 'package:intl/intl.dart';
 
 void main() {
   runApp(const MyApp());
@@ -124,7 +125,7 @@ class _MyHomePageState extends State<MyHomePage> {
       appBar: AppBar( 
         title: Text(widget.title),
         centerTitle: true,
-        leading: IconButton(icon: const Icon(Icons.menu), onPressed: () {debugPrint('menu');},),
+        leading: IconButton(icon: const Icon(Icons.menu), onPressed: () {print(DateTime.now());},),
       ),
       body: Center(
         child: Container(
