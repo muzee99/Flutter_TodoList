@@ -1,2 +1,2 @@
-# Flutter_TodoList
-Make Simple Todo List Application with Flutter
+# Todo List
+This is simple todo list application. 
