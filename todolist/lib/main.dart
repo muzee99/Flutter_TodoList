@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'sql_helper.dart';
 import 'todo_list.dart';
-//
+import 'package:intl/intl.dart';
+
 void main() {
   runApp(const MyApp());
 }
@@ -16,7 +17,7 @@ class MyApp extends StatelessWidget {
       title: 'Flutter Todo List',
       theme: ThemeData(
         fontFamily: 'SooMyeongjo',
-        primarySwatch: Colors.yellow,
+        primarySwatch: Colors.amber,
       ),
       home: const MyHomePage(title: 'Todo List'),
     );
@@ -34,7 +35,8 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   var provider = TodoProvider();
-  final _controller = TextEditingController();
+  final _addTextController = TextEditingController();
+  final _editTextController = TextEditingController();
   final _todoList = <Todo>{};
   List<Todo> items = [];
 
@@ -45,17 +47,13 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   void handleListChanged(Todo item) {
-    print('ListTile of TodoList is on Tapped. The state of isDone');
-    print(item.isDone);
     setState(() {
-      var newItem;
+      Todo newItem;
       if(item.isDone==0) {
-        print('item.isDone is 0.');
         newItem = Todo(content: item.content, id: item.id, isDone: 1);
         _todoList.add(item);
       }
       else {
-        print('item.isDone is 1.');
         newItem = Todo(content: item.content, id: item.id, isDone: 0);
         _todoList.remove(item);
       }
@@ -67,7 +65,6 @@ class _MyHomePageState extends State<MyHomePage> {
   Future<void> _insertDB(String content) async {
     var todo = Todo(content: content, isDone: 1);
     provider.insertTodo(todo);
-    // provider.printTodoItems();
   }
 
   void _loadTodoList() async { 
@@ -82,10 +79,6 @@ class _MyHomePageState extends State<MyHomePage> {
       for(int i=0; i<items.length; i++) {
         if(items[i].isDone==0) provider.deleteTodo(items[i].id);
       }
-      // items.map((e) {
-      //   print('_deleteDone() >> items.map');
-      //   if(e.isDone==0) provider.deleteTodo(e.id);
-      // });
       _loadTodoList();
       Fluttertoast.showToast(
         msg: "Done items are all deleted.",
@@ -104,10 +97,6 @@ class _MyHomePageState extends State<MyHomePage> {
       for(int i=0; i<items.length; i++) {
         provider.deleteTodo(items[i].id);
       }
-      // items.map((e) {
-      //   print('_deleteDone() >> items.map');
-      //   if(e.isDone==0) provider.deleteTodo(e.id);
-      // });
       _loadTodoList();
       Fluttertoast.showToast(
         msg: "All items are deleted.",
@@ -121,15 +110,25 @@ class _MyHomePageState extends State<MyHomePage> {
     });
   }
 
+  void _editTodo(Todo item, String content) {
+    Todo newItem = Todo(content: content, id: item.id, isDone: item.isDone);
+    setState(() {
+      provider.updateTodo(newItem);
+      _loadTodoList();
+    });
+    Fluttertoast.showToast(msg: 'edit todo item');
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar( 
         title: Text(widget.title),
+        centerTitle: true,
+        leading: IconButton(icon: const Icon(Icons.menu), onPressed: () {print(DateTime.now());},),
       ),
       body: Center(
         child: Container(
-          // color: Colors.blue,
           margin: const EdgeInsets.all(8.0),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -144,18 +143,13 @@ class _MyHomePageState extends State<MyHomePage> {
                     child: const Text('delete All')),
                 ],
               ),
-              const Text(
-                'Please input what to do.',
-                // style: TextStyle(fontFamily: "SooMyeongjo", fontSize: 20),
-              ),
               SizedBox(
                 child: TextField(
-                  controller: _controller,
-                  // autofocus: true,
+                  controller: _addTextController,
                   decoration: InputDecoration(
                     labelText: 'To do',
                     suffixIcon: IconButton(
-                      onPressed: _controller.clear, 
+                      onPressed: _addTextController.clear, 
                       icon: const Icon(Icons.clear),
                     ),
                   ),
@@ -163,15 +157,12 @@ class _MyHomePageState extends State<MyHomePage> {
                     setState(() {
                       _insertDB(str);
                       _loadTodoList();
-                      _controller.clear();
+                      _addTextController.clear();
                     });
                   },
                 ),
               ),
               Expanded(
-                // child: TodoList(
-                //   items: items,
-                // ),
                 child: ListView(
                   padding: const EdgeInsets.symmetric(vertical: 8.0),
                   children: items.map((Todo item) {
@@ -180,10 +171,52 @@ class _MyHomePageState extends State<MyHomePage> {
                       onListChanged: handleListChanged,
                       deleteListTile: (item) {
                         provider.deleteTodo(item.id);
+                        Fluttertoast.showToast(msg: 'delete todo item');
                         _loadTodoList();
                       },
                       editListTile: (item) {
-                        Fluttertoast.showToast(msg: 'edit');
+                        showDialog(
+                          context: context, 
+                          builder: (BuildContext context) {
+                            return AlertDialog(
+                              title: const Text('edit todo'),
+                              content: SingleChildScrollView(
+                                child: Container(
+                                  width: double.infinity,
+                                  child: Column(
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: [
+                                      TextField(
+                                        controller: _editTextController,
+                                        keyboardType: TextInputType.text,
+                                        decoration: InputDecoration(
+                                            hintText: 'Edit Todo',
+                                            suffixIcon: IconButton(onPressed: _editTextController.clear, icon: const Icon(Icons.clear)),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                              actions: [
+                                TextButton(
+                                  child: const Text('edit'),
+                                  onPressed: () {
+                                    _editTodo(item, _editTextController.text);
+                                    _editTextController.clear();
+                                    Navigator.of(context).pop();
+                                  }
+                                ),
+                                TextButton(
+                                  child: const Text('cancel'),
+                                  onPressed: () {
+                                    _editTextController.clear();
+                                    Navigator.of(context).pop();
+                                  }
+                                )
+                              ],
+                            );
+                          });
                       },
                     );
                   }).toList(),
