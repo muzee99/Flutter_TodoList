@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'sql_helper.dart';
 import 'todo_list.dart';
-import 'package:intl/intl.dart';
 
 void main() {
   runApp(const MyApp());
