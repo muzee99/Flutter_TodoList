@@ -15,7 +15,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Flutter Todo List',
       theme: ThemeData(
-        fontFamily: 'SooMyeongjo',
+        // fontFamily: 'SooMyeongjo',
         primarySwatch: Colors.amber,
       ),
       home: const MyHomePage(title: 'Todo List'),
@@ -133,11 +133,12 @@ class _MyHomePageState extends State<MyHomePage> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
               Row(
+                mainAxisAlignment: MainAxisAlignment.end,
                 children: [
-                  OutlinedButton(
+                  ElevatedButton(
                     onPressed: _deleteDone, 
                     child: const Text('delete Done')),
-                  OutlinedButton(
+                  ElevatedButton(
                     onPressed: _deleteAll, 
                     child: const Text('delete All')),
                 ],
